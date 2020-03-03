@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+
+{% block main %}
+{% include 'flash_messages.html' %}
+<h1 class="page-header">Secure Page</h1>
+<p class="lead">Welcome {{ current_user.username }}! <br>
+Your session is safe...</p>
+{% endblock %}

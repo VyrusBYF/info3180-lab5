@@ -10,7 +10,7 @@ from flask import render_template, request, redirect, url_for, flash
 from flask_login import login_user, logout_user, current_user, login_required
 from app.forms import LoginForm
 from app.models import UserProfile
-from werkzeug.security import generate_password_hash
+from werkzeug.security import check_password_hash
 
 
 ###
@@ -73,6 +73,27 @@ def login():
     flash_errors(form)
     return render_template('login.html', form=form)
 
+@app.route("/logout")
+@login_required
+def logout():
+    # Logout the user and end the session
+    logout_user()
+    flash('You have been logged out.', 'danger')
+    return redirect(url_for('login'))
+
+@app.route("/secure_page")
+@login_required
+def secure_page():
+    return render_template('secure_page.html')
+
+
+def flash_errors(form):
+    for field, errors in form.errors.items():
+        for error in errors:
+            flash(u"Error in the %s field - %s" % (
+                getattr(form, field).label.text,
+                error
+            ), 'danger')
 
 
 # user_loader callback. This callback is used to reload the user object from
